@@ -1,0 +1,308 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<stdbool.h>
+
+
+void calculate(int inputValue, char dot, int decimal){
+	
+	const char *first[] = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",};
+    const char *second[] = {"","Ten", "Twenty", "Thirty", "Forty","Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    const char *teens[] = {"","Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+	
+	
+	//This part perform the operetions to calculate the Thousand's Place Value.
+	if(inputValue >= 1000 && inputValue <= 10000 && decimal >= 0 && decimal < 100){ //I have set the limit of the input value from the user.
+		printf("You just entered %d%c%d and equivalent to ", inputValue, dot, decimal);
+		
+	    int thousand = inputValue / 1000; 			//In this part of code, I am dividing the thousand place value by 1000, to know the index of the thousand place from the array
+		printf("%s Thousand", first[thousand]); 	//accessing the thousand place value from pointer array "first"
+		int remainder1 = inputValue % 1000;			//in this part, I am only getting the remainder of the thousand. To extract the remainder
+		
+		if(remainder1 >= 100 && remainder1 <1000){  //if the remainder of the thousand place is ex: 789.98 -> this code part is where the remainder continues to execute.
+			int hundred = remainder1 / 100;
+			printf(" %s Hundred", first[hundred]);
+			int remainder2 = remainder1 % 100;
+			
+			if(remainder2 >= 20 && remainder2 < 100){
+				int tens = remainder2 / 10;
+				printf(" %s", second[tens]);
+				int remainder3 = remainder2 % 10;
+			
+				int ones = remainder3 / 1;
+				printf(" %s", first[ones]);
+				printf(" Peso.");
+			}
+			
+			if(remainder2 >= 10 && remainder2 < 20){
+				int tens = remainder2 / 1;
+				printf(" %s", teens[tens - 9]);
+				printf(" Peso.");
+			}
+		}
+		
+		
+		//in this conditional statement, we are trying to ignore the 0 value of the hundred place.
+		if(remainder1 >= 0 && remainder1 < 100){ //and if the remainder is only two digit, hundred place is ignored
+			
+			if(remainder1 >= 20 && remainder1 < 100){
+				int tens = remainder1 / 10;
+				printf(" %s", second[tens]);
+				int remainder2 = remainder1 % 10;
+			
+				int ones = remainder2 / 1;
+				printf(" %s", first[ones]);
+				printf(" Peso.");
+			}
+			
+			if(remainder1 >= 10 && remainder1 < 20){
+				int tens = remainder1 / 1;
+				printf(" %s", teens[tens - 9]);
+				printf(" Peso.");
+			}
+		}
+		
+		
+		//so if the remainder is 1 digit of only, this part of the code executes
+		if(remainder1 > 0 && remainder1 <10){
+			int ones = remainder1 / 1;
+			printf(" %s", first[ones]);
+			printf(" Peso");
+		}
+		
+		
+		//decimal extraction part
+			if(decimal >= 20 && decimal < 100){ 	//if the centavo is above 10 and not exceeded hundred, then the extraction part of decimal exists here
+				printf(" and");						//as the separation of float and integer part, I set the dot character as "and"
+				
+				int decimalTens = decimal / 10;		//while the two digit value of decimal, the program will divide into 10 to know what would be the index
+				printf(" %s", second[decimalTens]);	//as the decimalTens contains the qoutient, it will access the index of second pointer array
+				int remainder = decimal % 10;		//the program will get the remainder of the tens value by using modulus
+				
+				int decimalOnes = remainder / 1;	//so the remainder is now divided into 1
+				printf(" %s", first[decimalOnes]);	//as it is divided into 1, it will transfer the qoutient to know the index of the first pointer array to know what index will it be.
+				printf(" Centavo.");
+			}
+			
+			else if(decimal >= 10 && decimal < 20){
+				printf(" and");
+				
+				int decimalTens = decimal / 1;
+				printf(" %s", teens[decimalTens - 9]);
+				printf(" Centavo");
+			}
+			
+			else if(decimal > 0 && decimal < 10){	//if the float part is only 1 digit value, then this part will of the program exists.
+				printf(" and");						//again, the separation of the float part and the integer part
+				
+				int decimalOnes = decimal / 1;		//the one digit value of the float part will be divided by 1 to;
+				printf(" %s", first[decimalOnes]);	//get the index of the first pointer array
+				printf(" Centavo.");				//and printing the type of conversion as Centavo.
+			}
+				
+	}
+	
+	
+	
+	//This part perform the operetions to calculate the Hundred's Place Value.
+	else if(inputValue >= 100 && inputValue < 1000 && decimal >= 0 && decimal < 100){
+		printf("You just entered %d%c%d and equivalent to ", inputValue, dot, decimal);
+		
+		int hundreds = inputValue / 100;
+		printf("%s Hundred", first[hundreds]);
+		int remainder1 = inputValue % 100;
+		
+			if(remainder1 >= 20 && remainder1 < 100){
+				int tens = remainder1 / 10;
+				printf(" %s", second[tens]);
+				int remainder2 = remainder1 % 10;
+				
+				int ones = remainder2 / 1;
+				printf(" %s", first[ones]);
+				printf(" Peso");
+			}
+				
+			if(remainder1 >= 10 && remainder1 < 20){
+				int tens = remainder1 / 1;
+				printf(" %s", teens[tens - 9]);
+				printf(" Peso");
+			}
+		
+		
+		//the ten place value is ignored because the value is 0 and we jump to ones place value
+		if(remainder1 >= 0 && remainder1 <10){
+			int ones = remainder1 / 1;
+			printf(" %s", first[ones]);
+			printf(" Peso");
+		}
+		
+		
+		//decimal extraction part
+			if(decimal >= 20 && decimal < 100){
+				printf(" and");
+				
+				int decimalTens = decimal / 10;
+				printf(" %s", second[decimalTens]);
+				int remainder = decimal % 10;
+				
+				int decimalOnes = remainder / 1;
+				printf(" %s", first[decimalOnes]);
+				printf(" Centavo.");
+			}
+			
+			else if(decimal >= 10 && decimal < 20){
+				printf(" and");
+				
+				int decimalTens = decimal / 1;
+				printf(" %s", teens[decimalTens - 9]);
+				printf(" Centavo.");
+			}
+			
+			else if(decimal > 0 && decimal < 10){
+				printf(" and");
+				
+				int decimalOnes = decimal / 1;
+				printf(" %s", first[decimalOnes]);
+				printf(" Centavo.");
+			}
+			
+	}
+
+
+	
+	
+	//This part calculates the operations in Ten's Place Value;
+	else if(inputValue >= 10 && inputValue < 100 && decimal >= 0 && decimal < 100){
+		printf("You just entered %d%c%d and equivalent to ", inputValue, dot, decimal);
+		
+		//** TI UBRAM GARUD KET PLASTAREM ETUY TENS VALUE NA TA SUKATAM EJAI INPASAM KET MADI DAMBEL KA TALAGA **//
+		if(inputValue >= 20 && inputValue < 100){
+			int tens = inputValue / 10;
+			printf(" %s", second[tens]);
+			int remainder1 = inputValue % 10;
+		
+			int ones = remainder1 / 1;
+			printf(" %s", first[ones]);
+			printf(" Peso");
+		}
+		
+		if(inputValue >= 10 && inputValue < 20){
+			int tens = inputValue / 1;
+			printf("%s", teens[tens - 9]);
+			printf(" Peso");
+		}
+		
+		
+		//decimal extraction part
+			if(decimal >= 20 && decimal < 100){
+				printf(" and");
+				
+				int decimalTens = decimal / 10;
+				printf(" %s", second[decimalTens]);
+				int remainder = decimal % 10;
+				
+				int decimalOnes = remainder / 1;
+				printf(" %s", first[decimalOnes]);
+				printf(" Centavo.");
+			}
+			
+			else if(decimal >= 10 && decimal < 20){
+				printf(" and");
+				
+				int decimalTens = decimal / 1;
+				printf(" %s", teens[decimalTens - 9]);
+				printf(" Centavo.");
+			}
+			
+			else if(decimal >= 0 && decimal < 10){
+				printf(" and");
+				
+				int decimalOnes = decimal / 1;
+				printf(" %s", first[decimalOnes]);
+				printf(" Centavo.");
+			}
+						
+	}
+	
+	
+
+	
+	//This part perform the operetions to calculate the One's Place Value.
+	else if(inputValue >= 0 && inputValue <10 && decimal >= 0 && decimal < 100){
+			printf("You just entered %d%c%d and equivalent to ", inputValue, dot, decimal);
+			
+			int ones = inputValue / 1;
+			printf("%s", first[ones]);
+			printf(" Peso");
+			
+			
+			//decimal extraction part
+			if(decimal >= 10 && decimal < 100){
+				printf(" and");
+				
+				int decimalTens = decimal / 10;
+				printf(" %s", second[decimalTens]);
+				int remainder = decimal % 10;
+				
+				int decimalOnes = remainder / 1;
+				printf(" %s", first[decimalOnes]);
+				printf(" Centavo.");
+			}
+			
+			else if(decimal > 0 && decimal < 10){
+				printf(" and");
+				
+				int decimalOnes = decimal / 1;
+				printf(" %s", first[decimalOnes]);
+				printf(" Centavo.");
+			}
+			
+	}	
+	
+
+
+		
+	//if the input value exceeds the limit, this code part executes.
+	else{
+		printf("Your input exceeds the limit!");
+	}
+	
+}
+//end of the function
+	
+
+
+//The program will as another input value again. If I input y as a "yes", then the program will ask another input, if n as "no", then the program stops.
+bool try_again(char choice){
+	if(choice == 'y' || choice == 'Y')//if the user inputs 'y', it returns as true and the program runs again
+		return true;
+	else							//if the user inputs 'n', the program stops.
+		return false;
+}
+
+
+
+int main(){
+	
+	int inputValue;
+	char dot;
+	int decimal;
+	
+    char choice;
+    	
+		do {
+			
+			printf("Enter Amount in Peso: ");
+			scanf("%d%c%d", &inputValue, &dot, &decimal); //the user asks to put the some value of the assigned variables
+			
+			
+			calculate(inputValue, dot, decimal); //I am now passing the value of the declared variables with assigments to calculate funtion
+			
+			printf("\nDo you want to convert another Amount[Y/N]? "); //if I want to convert another input again, the pogram will ask.
+			scanf("%s", &choice);
+			
+		}while(try_again(choice));//as I pass the value of choice into try_again function, it will return if the value I assigned is true, if so, the code runs again and if false, the program stops
+		
+	
+	return 0;
+}
